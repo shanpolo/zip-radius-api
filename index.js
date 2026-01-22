@@ -9,10 +9,7 @@ const __dirname = path.dirname(__filename);
 
 // Load ZIP data
 const zipData = JSON.parse(
-  fs.readFileSync(
-    path.join(__dirname, "us_zips.json"),
-    "utf8"
-  )
+  fs.readFileSync(path.join(__dirname, "us_zips.json"), "utf8")
 );
 
 const app = express();
@@ -47,9 +44,11 @@ app.post("/check-radius", (req, res) => {
 
   let location = null;
 
-  // 1) Try ZIP first
+  // 1) Try ZIP first (FORCE STRING COMPARISON)
   if (zip) {
-    location = zipData.find(z => z.zip === zip);
+    location = zipData.find(
+      z => String(z.zip) === String(zip)
+    );
   }
 
   // 2) Fallback to city + state
